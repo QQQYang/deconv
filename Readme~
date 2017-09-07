@@ -1,0 +1,9 @@
+function:
+
+This project is aimed at implementing deconvolution in caffe of the latest version.
+
+It selects the first nine feature maps with the strongest activation and projects them to the first layer. Also, the receptive field windows are calculated from the location with the strongest activation in each feature map and they are used to crop the original image to show the correspongding features.
+
+usage:
+If you want to use it to visualize, you can change the model path, weight path, image path and so on. There are some examples about how to write files.
+

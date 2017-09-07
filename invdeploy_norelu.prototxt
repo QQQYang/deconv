@@ -1,0 +1,263 @@
+name: "CUBCompactBilinearNet"
+layer {
+  name: "data"
+  type: "Input"
+  top: "conv5_3"
+  input_param { shape: { dim: 1 dim: 1 dim: 28 dim: 28 } }
+}
+layer {
+  name: "switches4"
+  type: "Input"
+  top: "switches4"
+  input_param { shape: { dim: 1 dim: 512 dim: 28 dim: 28 } }
+}
+layer {
+  name: "switches3"
+  type: "Input"
+  top: "switches3"
+  input_param { shape: { dim: 1 dim: 256 dim: 56 dim: 56 } }
+}
+layer {
+  name: "switches2"
+  type: "Input"
+  top: "switches2"
+  input_param { shape: { dim: 1 dim: 128 dim: 112 dim: 112 } }
+}
+layer {
+  name: "switches1"
+  type: "Input"
+  top: "switches1"
+  input_param { shape: { dim: 1 dim: 64 dim: 224 dim: 224 } }
+}
+###############layer5##################
+layer {
+  name: "conv5_3"
+  type: "Deconvolution"
+  bottom: "conv5_3"
+  top: "conv5_2"
+  convolution_param {
+    num_output: 512
+    pad: 1
+    kernel_size: 3
+  }
+}
+layer {
+  name: "conv5_2"
+  type: "Deconvolution"
+  bottom: "conv5_2"
+  top: "conv5_1"
+  convolution_param {
+    num_output: 512
+    pad: 1
+    kernel_size: 3
+  }
+}
+layer {
+  name: "conv5_1"
+  type: "Deconvolution"
+  bottom: "conv5_1"
+  top: "pool4"
+  convolution_param {
+    num_output: 512
+    pad: 1
+    kernel_size: 3
+  }
+}
+layer {
+  name: "cat4"
+  type: "Concat"
+  bottom: "switches4"
+  bottom: "pool4"
+  top: "cat4"
+  concat_param {
+    axis: 0
+  }
+}
+#################layer4######################
+layer {
+  name: "ipool4"
+  type: "InvPooling"
+  bottom: "cat4"
+  top: "conv4_3"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv4_3"
+  type: "Deconvolution"
+  bottom: "conv4_3"
+  top: "conv4_2"
+  convolution_param {
+    num_output: 512
+    pad: 1
+    kernel_size: 3
+  }
+}
+layer {
+  name: "conv4_2"
+  type: "Deconvolution"
+  bottom: "conv4_2"
+  top: "conv4_1"
+  convolution_param {
+    num_output: 512
+    pad: 1
+    kernel_size: 3
+  }
+}
+layer {
+  name: "conv4_1"
+  type: "Deconvolution"
+  bottom: "conv4_1"
+  top: "pool3"
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+  }
+}
+layer {
+  name: "cat3"
+  type: "Concat"
+  bottom: "switches3"
+  bottom: "pool3"
+  top: "cat3"
+  concat_param {
+    axis: 0
+  }
+}
+##############layer 3##############
+layer {
+  name: "ipool3"
+  type: "InvPooling"
+  bottom: "cat3"
+  top: "conv3_3"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv3_3"
+  type: "Deconvolution"
+  bottom: "conv3_3"
+  top: "conv3_2"
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+  }
+}
+layer {
+  name: "conv3_2"
+  type: "Deconvolution"
+  bottom: "conv3_2"
+  top: "conv3_1"
+  convolution_param {
+    num_output: 256
+    pad: 1
+    kernel_size: 3
+  }
+}
+layer {
+  name: "conv3_1"
+  type: "Deconvolution"
+  bottom: "conv3_1"
+  top: "pool2"
+  convolution_param {
+    num_output: 128
+    pad: 1
+    kernel_size: 3
+  }
+}
+layer {
+  name: "cat2"
+  type: "Concat"
+  bottom: "switches2"
+  bottom: "pool2"
+  top: "cat2"
+  concat_param {
+    axis: 0
+  }
+}
+##############layer 2#############
+layer {
+  name: "ipool2"
+  type: "InvPooling"
+  bottom: "cat2"
+  top: "conv2_2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv2_2"
+  type: "Deconvolution"
+  bottom: "conv2_2"
+  top: "conv2_1"
+  convolution_param {
+    num_output: 128
+    pad: 1
+    kernel_size: 3
+  }
+}
+layer {
+  name: "conv2_1"
+  type: "Deconvolution"
+  bottom: "conv2_1"
+  top: "pool1"
+  convolution_param {
+    num_output: 64
+    pad: 1
+    kernel_size: 3
+  }
+}
+layer {
+  name: "cat1"
+  type: "Concat"
+  bottom: "switches1"
+  bottom: "pool1"
+  top: "cat1"
+  concat_param {
+    axis: 0
+  }
+}
+#############layer 1########
+layer {
+  name: "ipool1"
+  type: "InvPooling"
+  bottom: "cat1"
+  top: "conv1_2"
+  pooling_param {
+    pool: MAX
+    kernel_size: 2
+    stride: 2
+  }
+}
+layer {
+  name: "conv1_2"
+  type: "Deconvolution"
+  bottom: "conv1_2"
+  top: "conv1_1"
+  convolution_param {
+    num_output: 64
+    pad: 1
+    kernel_size: 3
+  }
+}
+layer {
+  name: "conv1_1"
+  type: "Deconvolution"
+  bottom: "conv1_1"
+  top: "img"
+  convolution_param {
+    num_output: 3
+    pad: 1
+    kernel_size: 3
+  }
+}
